@@ -1,27 +1,38 @@
 Car Rental System
 ----------------------------------------------------------------------------------------
-Introduction
+
+**Introduction**
+
 The Car Rental System is a web-based application designed to simplify and streamline car rental operations. It enables customers to browse available vehicles, make reservations, and rent cars for specific durations. Meanwhile, rental companies can efficiently manage their fleet, customer records, and bookings.
 
-Business Domain Description
+**Business Domain Description**
+
 Description
+
 The Car Rental System is a comprehensive platform for managing vehicle fleets, tracking rentals, generating invoices, and maintaining customer records. It offers an intuitive interface for both customers and administrators.
 
-Key Features
+**Key Features**
+
 Vehicle Management:
+
 Add, view, and manage rental vehicles.
 
 Customer Management:
+
 Manage customer accounts, rental history, and personal information.
 
 Rental Reservation:
+
 Customers can search for available vehicles and make reservations based on specific criteria.
 
 Booking and Payment:
+
 Calculate rental fees based on vehicle type, rental duration, and services. Supports payments via Google Pay, PayPal, and bank transfer.
 
-Use Cases
+**Use Cases**
+
 1. Adding a Vehicle
+
 Steps:
 
 Enter vehicle details (make, model, year, registration number, etc.).
@@ -29,6 +40,7 @@ Enter vehicle details (make, model, year, registration number, etc.).
 System updates the fleet database.
 
 2. Customer Reservation
+
 Steps:
 
 Browse available vehicles based on location, date range, and vehicle type.
@@ -36,6 +48,7 @@ Browse available vehicles based on location, date range, and vehicle type.
 Select a vehicle and provide booking details (pickup/drop-off locations, rental duration).
 
 3. User Creation
+
 Steps:
 
 Create a new user account using a valid email and password.
@@ -54,7 +67,8 @@ Operations: Add new bookings
 User Registration
 Attributes: Email, Password, Active status
 
-System Overview
+**System Overview**
+
 Design
 Frontend Components
 Multiple HTML templates: index.html, about.html, register.html, login.html, cars.html, booking.html
@@ -62,6 +76,7 @@ Multiple HTML templates: index.html, about.html, register.html, login.html, cars
 Rendered using Flask for dynamic content
 
 Backend Components
+
 Flask: Handles server-side logic and HTTP requests
 
 MongoDB: Stores car data, user information, and bookings (accessed via pymongo)
@@ -112,5 +127,6 @@ Organized car listing with filters
 
 Intuitive booking process with clear instructions and validation
 
-Conclusion
+**Conclusion**
+
 The Car Rental System is a complete web solution built with Flask and MongoDB to efficiently manage car rentals. It provides essential features like user registration, car listings, bookings, and seamless payment integration, enhancing the rental process for both customers and rental companies.
