@@ -1,0 +1,1356 @@
+<html>
+  <head>
+     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Royal Car Rentals</title>
+      <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+  </head>
+<script>
+    var encodedCardetails; 
+   // Wait for the DOM content to be fully loaded
+      document.addEventListener("DOMContentLoaded", function() {
+        AOS.init();
+        // Retrieve the JSON string from localStorage
+        var carString = localStorage.getItem('car-detail');
+
+        // Parse the JSON string back to a product object
+        encodedCardetails = JSON.parse(carString);
+
+        // Now you can use the product object on the destination page
+        console.log('Received Product:', encodedCardetails);
+        loadItem();
+          // Attach event listener to the form
+          document.getElementById("car-rental-form").addEventListener('submit', function(event) {
+              event.preventDefault(); // Prevent form submission
+              saveFormData(); // Call the function to save form data
+          });
+      });
+  
+      function saveFormData() {
+          // Get form data
+          var formData = new FormData(document.getElementById("car-rental-form"));
+          
+          // Send AJAX request to server-side Python script to save the form data
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/book", true); // Adjust URL to your server-side Python script
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                  if (xhr.status === 200) {
+                       var data = JSON.parse(xhr.responseText);
+                        // Do something with the JSON data
+                       console.log(data);
+                      // If data saved successfully, display success message and redirect
+                      var toastElement = document.getElementById("toast");
+                      document.getElementById("toast").innerHTML +=document.getElementById("toast").innerText+ " and your Reference Number is RCR00000"+ data.ref;
+                      toastElement.className = "show";
+                      setTimeout(function(){ toastElement.className = toastElement.className.replace("show", ""); 
+                      window.location.href = "/cars";
+                      }, 3000);
+                  } else {
+                      // If there was an error, display an error message
+                      document.getElementById("message").innerText = "Error saving data. Please try again later.";
+                  }
+              }
+          };
+          xhr.send(formData);
+      }
+ 
+  function  loadItem(){
+  const template = document.getElementById("container-product");
+   template.innerHTML += `<div class="product-detail">
+    <div class="left-section" data-aos="zoom-in-up" data-aos-duration="500">
+    <img
+    src="https://cdn.pixabay.com/photo/2012/11/02/13/02/car-63930_1280.jpg"
+    alt="$99"
+  />
+    </div>
+    <div class="right-section">
+      <p class="title">${encodedCardetails.Brand}</p>
+      <p class="price">$ ${encodedCardetails.Price}</p>
+      <table>
+      
+      <tr>
+        <td>Model</td>
+        <td>${encodedCardetails.Model}</td>
+      </tr>
+      <tr>
+        <td>Year</td>
+        <td>${encodedCardetails.Year}</td>
+      </tr>
+      <tr>
+        <td>Color</td>
+        <td>${encodedCardetails.Color}</td
+      </tr>
+      <tr>
+        <td>Type</td>
+        <td>${encodedCardetails.Type}</td>
+
+      </tr>
+      <tr>
+        <td>Transmission</td>
+        <td>${encodedCardetails.Fuel}</td>
+
+      </tr>
+    </table>
+     
+      <p class="description">
+        <p>Features</p>
+        <ul>
+          <li>Engine: Powers the car; types include gasoline, diesel, electric, and hybrid.</li>
+          <li>Transmission: Transfers engine power to wheels; types include manual and automatic.</li>
+          <li>Wheels and Tires: Provide traction; modern cars use alloy wheels and radial tires.</li>
+          <li>Brakes: Essential for stopping; most cars have four-wheel disc brakes.</li>
+          
+        </ul>
+       </p>
+      </div>
+      
+      </div>
+     
+    </div>
+  </div>`;
+}
+</script>
+
+  <style type="text/css">
+       @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap');
+       
+/* Resetting default margin, padding, and font for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Oswald", sans-serif;
+}
+input[type=radio] {
+  margin-right:10px;
+}
+    form{
+      background-color: white;
+      width: 1400px;
+      height:1100px;
+    }
+    .form-control {
+    display: block;
+    width: 140%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .rowTab{
+          margin-bottom: 16px;
+        width: 50%;
+    }
+  
+
+  /* CSS for main section */
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 320px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), url("https://cdn.pixabay.com/photo/2016/03/26/22/34/car-1281640_1280.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.intro span{
+    color: orange;
+}
+.intro h1 {
+  font-family: sans-serif;
+  font-size: 60px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.intro p {
+  font-size: 20px;
+  color: #d1d1d1;
+  text-transform: uppercase;
+  margin: 20px 0;
+}
+
+.intro button {
+  background-color: #5edaf0;
+  color: #000;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.4)
+}
+.product-detail{
+  width:1200px;
+  margin-top:4%;
+}
+
+form .left{
+  width:700px;
+  float:left;
+}
+
+form .right{
+  width:700px;
+  float:left;
+}
+.left-section {
+  width:690px;
+  float:left;
+  height:530px;
+}
+
+.left-section img {
+  width:670px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 8px;
+  height:500px;
+}
+
+.right-section {
+  width:508px;
+  float:right;
+  height:530px;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+p.title {
+  color: green;
+  font-size: 48px;
+  margin: 8px 0;
+}
+
+p.id {
+  color: grey;
+}
+
+p.price {
+  font-size: 36px;
+  margin: 8px 0;
+}
+
+.star {
+  font-size: 32px;
+  color: rgb(1, 142, 62);
+}
+
+p.description{
+    font-size: 17px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 80px 530px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+  border: 12px solid yellowgreen;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #06D85F;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+.products button{
+  background-color: #2B2E4A;
+}
+
+/* Hide horizontal overflow in the body */
+body {
+    overflow-x: hidden;
+}
+
+/* Styling for the fixed navigation bar at the top of the page */
+.banner_head {
+    width: 100%;
+    background-color: black;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Style for the list */
+.hover-list {
+    display: none; /* Hide the list by default */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  /* Style for list items */
+  .hover-list li {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: #333;
+  }
+  
+/* Styling for the logo link */
+#logo {
+    color: ghostwhite;
+    font-size: 140%; /* Adjust the font size as needed */
+    text-decoration: none;
+    display: inline-block;
+    
+}
+
+/* Styling for the italicized brand name in the logo */
+.brand-name {
+    font-style: italic;
+    vertical-align: middle;
+    font-size: 120%;
+}
+
+/* Hover effect for the logo */
+#logo :hover {
+    color: white;
+}
+
+/* Styling for the navigation bar */
+.navbar{
+    margin:auto;
+    padding: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Styling for the navigation links in the bar */
+.navbar ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 20px; 
+    position: relative;  
+}
+
+/* Styling for the navigation link text */
+.navbar ul li a{
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    font-size: 70%;
+}
+
+/* Styling for the dropdown menu in the navigation bar */
+.navbar ul {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: lightblue;
+    z-index: 1000;   
+}
+
+/* Styling for the heading section of the webpage */
+.head{
+    display: none;
+}
+
+/* Displaying the dropdown menu when toggled */
+.navbar ul.show {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Styling for individual items in the dropdown menu */
+.navbar ul li {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* Styling for the menu button */
+.menu-btn {
+    display: block;
+    color: white;
+    cursor: pointer;
+}
+
+/* Hiding the checkbox used for menu toggle */
+.hidden-checkbox {
+    display: none;
+}
+
+/* Displaying the navigation links when the checkbox is checked */
+#menuToggle:checked + .menu-btn + ul {
+    display: flex;
+}
+
+/* Styling for the underline effect on navigation links */
+.navbar ul li::after {
+    content: '';
+    height: 3px;
+    width: 0%;
+    background:  lightblue;
+    position:absolute;
+    left: 0;
+    bottom: -10px;
+    transition: 0.5s;
+}
+
+/* Adjusting the width of the underline effect on hover or focus */
+.navbar ul li a:hover::after,
+.navbar ul li a:focus::after {
+    width: 100%;
+}
+
+/* Styling for the offer box section */
+.offer_box {
+    padding-top: 65px;
+    padding-bottom: 15px;
+    border: 1px solid #000;
+    background-color:  lightblue;
+    text-align: center;
+    font-size: 70%;
+}
+
+/* Styling for links within the offer box */
+.offer_box a{
+    color: black;
+}
+
+/* Hover effect for links within the offer box */
+.offer_box a:hover {
+    color:  white;
+}
+
+/* Styling for the grid container */
+.grid {
+    padding: 1rem;
+    overflow: hidden;
+}
+
+/* Styling for images within the slider */
+.slider img {
+    max-height: 100%;
+    padding: 15px;
+    border: #2196F3; /* Adjust max-height for smaller screens */
+    width: 3580px;
+}
+
+/* Styling for the slider wrapper */
+.slider-wrapper {
+    position: relative;
+    margin: 0 auto;
+}
+
+/* Styling for the slider container */
+.slider {
+    display: flex;
+    position: relative;
+    flex-direction: column; /* Display images in a column */
+    height: auto;
+}
+
+/* Styling for the products section */
+.products {
+    padding-left: 6rem; /* Adjust padding for smaller screens */
+    border: 44px solid;
+    background-color: white;
+}
+
+.products p{
+  font-weight: bold;
+  font-size: 1.9em;
+  margin-bottom: 10px;
+}
+
+/* Styling for the main products container */
+.main-products{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;  
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    margin-left: 25%; /* Set left margin to auto for center alignment */
+    margin-right: auto;
+}
+
+/* Styling for the products heading */
+.products h1{
+    text-align: left;
+    font-size: 150%;
+    padding: 4%;
+    color:  #2B2E4A;
+}
+
+/* Hover effect for product content heading */
+.product-content h3:hover{
+    border: 0.5px solid black;
+    color:  #2B2E4A;
+    background: white;
+    cursor: pointer;
+    z-index: 100;
+}
+
+/* Styling for individual product content */
+.product-content {
+    padding : 0px;
+}
+
+/* Styling for the inner
+/* Styling for individual products within the main container */
+.inner-products{
+    flex: 1 1 350px;
+    position: relative;
+}
+
+/* Styling for the product content heading */
+.product-content h3{
+    position: absolute;
+    color: white;
+    background-color:  #2B2E4A;
+    padding: 0.2rem 0.5rem;
+    z-index: 100;
+}
+
+/* Styling for images within the inner products */
+.inner-products img {
+    cursor: pointer;
+    max-width: 60%;
+    padding: 1rem;
+    animation: float 3s linear infinite;
+}
+
+/* Animation for the floating effect of inner product images */
+@keyframes float {
+    0%, 100%{
+        transform: translateY(0rem);
+    }
+    50%{
+        transform: translateY(3rem);
+    }   
+}
+
+/* Styling for images within the inner blog content */
+.inner-blog-content img{
+    width: 150px;
+    padding-top: 40px;
+}
+
+/* Styling for the our blog section */
+.our-blog{
+    padding: 2rem 7%;
+    display: flex;
+    flex-direction: column; /* Adjusted to column for vertical alignment of heading and blogs */
+}
+
+/* Styling for the heading within the our blog section */
+.our-blog h1 {
+    padding-bottom: 2%;
+    text-align: center;
+    color:  lightblue;
+    font-size: 200%;
+}
+
+/* Additional styling for images within inner blog content */
+.inner-blog-content img{
+    width: 150px;
+    padding-top: 40px;
+    padding-right: 20px;
+}
+
+/* Styling for the main blogs container */ 
+.main-blogs{ 
+    gap: 1rem;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+/* Styling for individual blogs within the main blogs container */
+.inner-blogs{
+    flex: 1 1 30rem;
+}
+
+/* Styling for the content within each blog post */
+.blog-inner-content{
+    display: flex;
+    text-align: left;
+}
+
+/* Styling for the heading within the inner blog content */
+.inner-blog-content h2{
+    font-size: 25px;
+}
+
+/* Styling for paragraphs within the inner blog content */
+.inner-blog-content p{
+    font-size: 14px;
+    text-align: justify;
+}
+
+/* Styling for the reviews section */
+.reviews{
+    padding: 3rem 7%;
+}
+
+/* Styling for the heading within the reviews section */
+.reviews h1{
+    font-size: 26px;
+    color:  lightblue;
+    text-align: center;
+}
+
+/* Styling for the review content box container */
+.review-content-box{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction:row;
+    gap: 50px;
+    padding-top: 2.5rem;
+    padding-bottom: 2rem;
+}
+
+/* Styling for individual review content boxes */
+.review-content{ 
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    background-color:  lightblue;
+    transition: transform 0.3s ease-in-out, opacity 0.5s ease-in-out; /* Add smooth transitions for scale and opacity */
+    animation: fadeIn 0.5s forwards;
+    clip-path: polygon(20% 0, 80% 0, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0 80%, 0 20%);
+    background: linear-gradient(45deg, #4CAF50, #2196F3);
+    font-size: 100%; /* Adjusted font size */
+    width: 100%; /* Set a fixed width for the hexagon */
+    height: 100%; /* Set a fixed height for the hexagon */
+    margin: 5px;
+    display: flex;
+}
+
+/* Hover effect for review content boxes */
+.review-content:hover {
+    transform: scale(1.05); /* Enlarge the box on hover */
+  }
+
+/* Animation for fading in review content boxes */
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+/* Styling for paragraphs within review content boxes */
+.review-content p{
+    text-align: center;
+}
+
+/* Additional styling for the footer section */
+.ft {
+    display: none;
+  }
+  .two {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .foo {
+    background-color: black;
+    height: 50px;
+    width: 200px;
+    border: 3px solid  lightblue;
+    text-align: center;
+    padding-top: 12px;
+    transform-origin: right bottom;
+    transform: skewY(10deg);
+  }
+  .o {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .ftoo,
+  .fto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0%;
+    text-align: center;
+  }
+  .two {
+    display: none;
+  }
+  
+  
+  button {
+    font-family: "Oswald", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    /* color: #edf0f1; */
+    color: white;
+    border: 9px solid darkblue;
+    text-decoration: none;
+  }
+  button {
+    /* margin-left: 20px; */
+    padding: 9px 25px;
+    /* background-color: darkblue; */
+    background-color:black;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+  }
+  button:hover {
+    /* background-color: darkblue; */
+    background-color: white;
+    color: black;
+  }
+  .footer {
+    background-color:  cadetblue;
+  }
+  .one,
+  .two {
+    text-align: justify;
+    /* height: 200px; */
+    font-family: "Oswald", sans-serif;
+    font-size: 20px;
+    padding: 15px 15px;
+  }
+  .one,
+  .two {
+    text-align: center;
+  }
+  
+  .foo {
+    background-color: black;
+    height: 50px;
+    width: 200px;
+    border: 3px solid  lightblue;
+    text-align: center;
+    padding-top: 12px;
+    transform-origin: right bottom;
+    transform: skewY(10deg);
+  }
+  .foo,
+  #msgg {
+    margin: 30px 30px;
+    color: white;
+    /* margin-top: 60px;
+    margin-bottom: 60px; */
+  }
+  
+  #msgg {
+    color: black;
+    font-weight: bolder;
+    font-size: 30px;
+  }
+  .butt {
+    background-color:  lightblue;
+    border: none;
+    border-radius: 70px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    color: white;
+    /* margin-left: 100px; */
+  }
+  .ftoo,
+  .fto {
+    /* display: inline-block;
+    margin: 20px 20px;
+    padding-bottom: 4px;
+    padding-right: 80px; */
+    vertical-align: top;
+  }
+  li {
+    list-style-type: none;
+    margin-top: 3px;
+    padding-top: 5px;
+  }
+  #ttt {
+    text-align: center;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    color: black;
+    opacity: 1;
+    font-size: 13px;
+  }
+  .three {
+    /* vertical-align: top; */
+    background-color: whitesmoke;
+  }
+
+  ul li a{
+    text-decoration: none;
+    color: black;
+  }
+  
+  ul p a{
+    text-decoration: none;
+    color: #000;
+  }
+
+  
+  /* Media query for screens with minimum width of 768px */
+  @media screen and (min-width: 768px) {
+    /* Adjust styling for elements with classes 'foo', 'msgg', and 'butt' on screens with minimum width of 768px */
+    .foo,
+      #msgg,
+      .butt {
+        display: inline-block;
+      }
+      .ftoo,
+      .fto,
+      .ft {
+        display: inline-block;
+    
+        margin: 20px 20px;
+        padding-bottom: 4px;
+        padding-right: 80px;
+        vertical-align: top;
+      }
+      .ft {
+        opacity: 0.7;
+        width: 100%;
+        height: 30%;
+        margin: 0px;
+        padding-bottom: 0px;
+        padding-right: 0px;
+      }
+  /* Adjust styling for element with id 'map' on screens with minimum width of 768px */
+      #map {
+        width: 100%;
+      }
+      .o {
+        display: block;
+      }
+    
+      .two {
+        display: block;
+      }
+      .butt {
+        text-align: justify;
+      }
+      .o .foo {
+        align-items: stretch;
+      }
+      .o .ftoo .fto {
+        align-items: stretch;
+      }
+    
+    }
+
+    @media only screen and (min-width: 768px) {
+
+        .foo,
+         #msgg,
+         .butt {
+           display: inline-block;
+         }
+         .ftoo,
+         .fto,
+         .ft {
+           display: inline-block;
+       
+           margin: 20px 20px;
+           padding-bottom: 4px;
+           padding-right: 80px;
+           vertical-align: top;
+         }
+         .ft {
+           opacity: 0.7;
+           width: 100%;
+           height: 30%;
+           margin: 0px;
+           padding-bottom: 0px;
+           padding-right: 0px;
+         }
+         #map {
+           width: 100%;
+         }
+         .o {
+           display: block;
+         }
+       
+         .two {
+           display: block;
+         }
+         .butt {
+           text-align: justify;
+         }
+       
+       }
+
+       
+
+@media screen and (min-width: 768px){
+    
+    .navbar{
+        margin:auto;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .navbar ul {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        top: 0;
+        width: auto;
+        background-color: transparent;
+        padding-bottom: 0;
+    }
+
+    .navbar ul.show {
+        display: flex;
+    }
+
+    .navbar ul li{
+        list-style: none;
+        display: inline-block;
+        margin: 0 20px; 
+        position: relative;  
+        white-space: nowrap;
+    }
+    
+    .navbar ul li a{
+        text-decoration: none;
+        color: white;
+        text-transform: uppercase;
+        font-size: 100%;
+    }
+    
+    .navbar ul li::after{
+        content: '';
+        height: 3px;
+        width: 0%;
+        background: lightblue;
+        position:absolute;
+        left: 0;
+        bottom: -10px;
+        transition: 0.5s;
+    }
+    
+    .navbar ul li:hover::after{
+        width: 100%;
+    }
+
+    .menu-btn {
+        display: none;
+    }
+    
+    .hidden-checkbox {
+        display: none; /* Hide the checkbox visually */
+      }
+    
+    #menuToggle:checked + .menu-btn + ul {
+        display: none;
+    }
+
+    .offer_box {
+        padding-top: 85px;
+        font-size: 130%;
+    }
+
+    .inner-blog-content img{
+        padding-top: 20px;
+        padding-right: 20px;
+    }
+
+    .inner-blog-content h2{
+        padding-top: 20px;
+        padding-right: 20px;
+        
+    }
+
+    .inner-blog-content p{
+        padding-top: 20px;
+        padding-right: 20px;
+        font-size: 120%;
+        
+    }
+
+    .main-products{
+        margin-left: 10%; /* Set left margin to auto for center alignment */
+        margin-right: auto;
+    }
+
+    .inner-products img {
+        max-width: 80%;
+    }
+
+    .product-content h3{
+        padding: 0.7rem 1.3rem;
+    }
+
+    .products h1{
+        font-size: 200%;
+    }
+
+}
+
+@media screen and (min-width:1279px){
+/* Adjust padding for the grid container on screens with minimum width of 1279px */
+    .grid {
+        padding: 2rem;
+        overflow: hidden;
+    }
+
+    /* Adjust styling for images within the slider on screens with minimum width of 1279px */
+    .slider img {
+        max-height: 100%; 
+        padding: 0px; 
+        flex: 0 0 100%;
+        object-fit: contain;
+        max-height: 100%;
+        display: block;
+        border: #2196F3; /* Adjust max-height for smaller screens */
+    }
+
+    .slider {
+        display: flex;
+        animation: slideAnimation 11s linear infinite, fadeIn 3s ease-out 15s infinite;
+        box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0%);
+        border-radius: 0.5rem;
+        position: relative;
+        height: 300px;
+        flex-direction: row;
+    }
+    
+    @keyframes slideAnimation {
+        0%{
+            transform: translateX(0);
+        }
+        25%{
+            transform: translateX(0);
+        }
+        35%{
+            transform: translateX(-100%);
+        }
+        45%{
+            transform: translateX(-100%);
+        }
+        55%{
+            transform: translateX(-200%);
+        }
+        75%{
+            transform: translateX(-200%);
+        }
+        85%{
+            transform: translateX(-100%);
+        }
+        90%{
+            transform: translateX(-100%);
+        }
+        100%{
+            transform: translateX(0);
+        }
+    }
+    
+    .slider img:nth-child(4),
+    .slider img:nth-child(5) {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        opacity: 0;
+    }
+
+    /* Styling for specific images within the slider on screens with minimum width of 1279px */
+    .slider img:nth-child(6),
+    .slider img:nth-child(7) {
+        position: absolute;
+        top: 0;
+        left: 200%;
+        opacity: 0;
+    }
+
+    /* Keyframes animation for fading in images within the slider */
+    @keyframes fadeIn {
+        80%, 100% {
+            opacity: 1;
+        }
+    }
+
+    /* Styling for the slider navigation container on screens with minimum width of 1279px */
+    .slider-nav {
+        display: flex;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+}
+#toast {
+    visibility: hidden;
+    max-width: 50%;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+    padding: 8px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 50px; 
+    font-size: 16px;
+    transform: translateX(-50%);
+}
+
+#toast.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 50px; opacity: 1;} 
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 50px; opacity: 1;} 
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 50px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 50px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+
+  </style>
+  <body>
+    <header></header>
+     <nav>
+         <div class="banner_head">
+            <div class="navbar">
+                <!-- Logo and Navigation Links -->
+                <a href="index.html" id="logo"> 
+                    <span class="brand-name">Royal Car Rentals</span> 
+                    
+                </a>
+                <input type="checkbox" id="menuToggle" class="hidden-checkbox">
+                <label class="menu-btn" for="menuToggle">&#9776;</label>
+                
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/cars">Cars</a></li>
+                    <li><a href="/home">Purchase</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/login">Log out</a><li>
+                </ul>                                                                                                                                                                                                                                                                                                                                                                                                  
+            </div>
+        </div>  
+    </nav>
+
+      <banner>
+      <div>
+          <div class="intro">
+            <h1>Booking</h1>
+            </div>
+          </div>
+    </banner>
+    <main>
+      
+  
+  <div class="products">
+    <div id="container-product"></div>
+    
+    <form id="car-rental-form" method="POST" action="/book">
+      <div class="left">
+        <h1 id="title">Personal Information</h1>
+
+        <div class="rowTab">
+          <div class="rightTab">
+            <input autofocus type="text" name="firstname" id="firstname" class="form-control" placeholder="First name" required>
+          </div>
+        </div>
+        
+        <div class="rowTab">
+          <div class="rightTab">
+            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Last name" required>
+          </div>
+        </div>
+  
+        
+        <div class="rowTab">
+          <div class="rightTab">
+            <input type="text" name="email" id="email" class="form-control" placeholder="Your Email" required>
+          </div>
+        </div>
+        
+        <div class="rowTab">
+          <div class="rightTab">
+            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Enter mobile number" required>
+          </div>
+        </div>
+        
+      </div>
+    <div class="right">
+      <h1 id="title">Booking Detail</h1>
+      <div class="rowTab">
+        <div class="rightTab">
+          <input autofocus type="text" name="Pickup" id="Pickup" class="form-control" placeholder="PickUp Location" required>
+        </div>
+      </div>
+      
+      <div class="rowTab">
+        <div class="rightTab">
+          <input type="text" name="dropLocation" id="dropLocation" class="form-control" placeholder="Drop Location" required>
+        </div>
+      </div>
+
+      <div class="rowTab">
+        <div class="rightTab">
+          <input type="datetime-local" name="pickupdate" id="pickupdate" class="form-control" title="Pickup Date" placeholder="" data-toggle="datetimepicker">
+        </div>
+      </div>
+      
+      <div class="rowTab">
+        <div class="rightTab">
+          <input type="datetime-local" name="returndate" id="returndate" class="form-control" title="Return Date" placeholder="Enter mobile number" required>
+          
+        </div>
+      </div>
+    </div>
+      
+
+        <h1 id="title" style="padding-bottom: 10px;">Payment</h1>
+        <div class="rowTab">
+        
+        <label class="container">GooglePay
+          <input type="radio" checked="checked" name="radio">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container">PayPal
+          <input type="radio" name="radio">
+          <span class="checkmark"></span>
+        </label>
+        <label class="container">Bank Transfer
+          <input type="radio" name="radio">
+          <span class="checkmark"></span>
+        </label>
+
+         
+      </div>
+      <button id="submit" type="submit" onclick="showToast()">Book Now</button>
+      <div id="toast">Booked successfully!</div>
+      </div>
+
+    
+  </form>
+</div>
+
+    </main>
+  
+   <!--Footer area-->
+    <footer>
+      <div class="footer">
+        <br />
+
+        <div class="footer one o">
+          <div class="foo"><p class="f1">BEST DEAL</p></div>
+          <div class="foo"><p class="f1">TOP VALUE</p></div>
+          <div class="foo"><p class="f1">BUDGET PICK READY</p></div>
+          <div class="foo"><p class="f1">IN STOCK</p></div>
+          <div id="msgg">
+            <p>ECONOMIC</p>
+            <p>CAR RENTALS</p>
+          </div>
+          <br />
+        </div>
+        <hr />
+          <div class="ft">
+            <iframe
+              id="map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2880.981171725076!2d-79.33868912381685!3d43.77324967109664!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d3bca1a3f78f%3A0x815365ed6c3b957e!2sLambton%20College%20In%20Toronto!5e0!3m2!1sen!2sca!4v1700614584508!5m2!1sen!2sca"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+        <div class="footer three tt">
+          <p id="ttt">&copy; Royal Cars Inc 2024</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
